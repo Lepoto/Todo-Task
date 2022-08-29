@@ -1,0 +1,120 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+
+	{% if request.user.is_authenticated %}
+  <h1>Hello {{request.user}}</h1>
+   <a class="btn" href="{% url 'logout-user'%}">Logout</a>
+  {% else %}
+     <a href="{% url 'login-user' %}">Login</a>
+  {% endif %}
+  <hr>
+  
+<div class="col-md-12" style="margin-bottom: 30px;"><a class="btn" href="{% url 'create-task' %}">Add a task</a></div>
+
+  <!-- Task table -->
+        <div class="cart-page">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="cart-page-inner">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Tasks</th>
+                                            <th>Description</th>
+                                            <th>Created</th>
+                                            <th>View</th>
+                                            <th>Edit</th>
+                                            <th>Del</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="align-middle">
+                                      {% for i in object_list %}
+                                        <tr>
+                                            <td>
+                                                <div class="img">
+                                                    <p>{{i.title}}</p>
+                                                </div>
+                                            </td>
+                                            <td>{{i.description | truncatewords:3}}</td>
+                                            
+                                            </td>
+                                            <td>{{i.created|timesince}}</td>
+                                            <td>
+                                              <a href="{% url 'task-detail' i.slug %}">View</a>
+                                            </td>
+                                            <td>
+                                              <a href="{% url 'update-task' i.id %}">✍️</a>
+                                            </td>
+                                            <td>
+                                              <a href="{% url 'delete-task' i.id %}"><i class="fas fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                              
+                                          {% empty %}
+                                          <tr>
+                                           
+                                             <h4 style="margin-left:70px;">No tasks available yet</h4>
+                                           
+                                          </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="cart-page-inner">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="cart-summary">
+                                        <div class="cart-content">
+                                            <h2>Task Summary of {{request.user}} </h2>
+                                            <p><span>2</span> imcompleted tasks</p>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Task Table -->
+        <div class="col-md-12">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                      {% if page_obj.has_previous %}
+
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">&laquo; Previous</a>
+                
+                      {% endif %}
+                    </li>
+                    
+                    <li class="page-item active">
+                      <a class="page-link" href="#">{{page_obj.number}}</a>
+                    </li>
+                    
+                    <li class="page-item disabled"><a class="page-link" href="#">of</a></li>
+                    <li class="page-item"><a class="page-link" href="#">{{page_obj.paginator.num_pages}}</a></li>
+
+                    <li class="page-item">
+                      {% if page_obj.has_next %}
+                      <a class="page-link" href="?page={{ page_obj.next_page_number}}">Next</a>
+                      
+                      {% elif page_obj.paginator.num_pages %}
+                      <a class="page-link disabled" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+
+                      {% endif %}
+                    </li>
+
+                </ul>
+            </nav>
+        </div>
+
+{% endblock content %}

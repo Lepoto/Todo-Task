@@ -1,0 +1,42 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+
+<!-- Login Start -->
+        <div class="login">
+            <div class="container-fluid">
+              <div class="col-md-12" style="margin-bottom: 30px;"> <h2>Welcome Back, Todo Task ✍️</h2></div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="login-form">
+                          <form method="POST" action="{% url 'login-user' %}">
+
+                            {% csrf_token %}
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Username</label>
+                                    <input class="form-control" name="username" type="text" placeholder="Username">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Password</label>
+                                    <input class="form-control" name="password" type="password" placeholder="Password">
+                                    
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <button class="btn">Login</button>
+                                </div>
+                                <div class="col-md-12">
+                                  <p>Don't have an account? <a href="{% url 'register-user' %}">Register here</a></p>
+                                </div>
+
+                            </div>
+                          </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Login End -->
+{% endblock content %}
